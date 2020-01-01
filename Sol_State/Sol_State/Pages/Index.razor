@@ -1,0 +1,49 @@
+﻿@*https://docs.microsoft.com/en-us/aspnet/core/blazor/state-management?view=aspnetcore-3.1*@
+
+@page "/"
+
+@using Microsoft.AspNetCore.ProtectedBrowserStorage
+@inject ProtectedSessionStorage protectedSessionStoreObj
+
+@code{
+
+    private string Message { get; set; }
+
+    private async Task SetValue()
+    {
+        await protectedSessionStoreObj.SetAsync("myValue", Message);
+    }
+
+    private async Task GetValue()
+    {
+        Message = await protectedSessionStoreObj.GetAsync<String>("myValue");
+    }
+
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-12">
+            <div class="form-group">
+                <label for="txtName">Value</label>
+                <input id="txtName" @bind-value="Message" class="form-control" />
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-2">
+            <button id="btnSet" class="btn btn-danger" @onclick="this.SetValue">Set</button>
+        </div>
+        <div class="col-2">
+            <button id="btnGet" class="btn btn-danger" @onclick="this.GetValue">Get</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-12">
+            <h1>@Message</h1>
+        </div>
+    </div>
+</div>
